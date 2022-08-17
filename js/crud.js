@@ -50,7 +50,6 @@ let data = JSON.parse(jsonData);
 
 function handleOnLoad() {
     let country = data.country
-    console.log(country);
     let html = "";
     country.map((country) => {
         html += `<option value="${country.name}">${country.name}</option>`;
@@ -108,12 +107,14 @@ handleLoadUsers();
 // Call when user click on submit or update button
 
 let users;
-let datas = JSON.parse(localStorage.getItem("users"));
-if(data.length > 0) {
-    users = JSON.parse(localStorage.getItem("users"));
+let parsedUsers = JSON.parse(localStorage.getItem("users"));
+if(parsedUsers.length == 0) {
+    users = [];
+    console.log(users)
 }
 else{
-    users = [];
+    users = JSON.parse(localStorage.getItem("users"));
+    console.log(users)
 }
 
 
@@ -196,7 +197,6 @@ const handlePushData = (person) => {
     }
     users.push(person);
     localStorage.setItem("users",JSON.stringify(users));
-    // handleLoadUsers();
 }
 
 
@@ -209,6 +209,7 @@ localUsers = JSON.parse(localUsers);
 
     if(localUsers!=null){
         localUsers.map((user)=>{
+            idArr.push(user.id);
             let html = `<tr>
                         <th scope="row"><input type="checkbox" class="checkbox"></th>
                         <th scope="row">${user.id}</th>
@@ -265,7 +266,6 @@ const handleDeleteAll = () => {
         }
     }
     checkedChk.map((elem, i) => {
-        console.log(i);
         let selectedRow = checkedChk[i].parentNode.parentNode;
         let getId = selectedRow.cells[1].innerHTML;
         let index = idArr.indexOf(Number(getId));
