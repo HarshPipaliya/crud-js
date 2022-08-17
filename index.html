@@ -16,6 +16,10 @@
         border: 2px solid rgba(0, 0, 0, 0.14);
         padding: 20px;
       }
+      #table_wrapper{
+        max-width: 100% !important;
+        overflow: auto !important;
+      }
     </style>
   </head>
   <body onload="handleOnLoad()">
@@ -88,7 +92,7 @@
     <div class="container" style="width: 100%;">
       <button class="btn btn-danger mt-4" id="deleteAll" onclick="handleDeleteAll();">Delete All</button>
     </div>
-    <div class="container data mt-4">
+    <div class="container data mt-4" id="table_wrapper">
       <h1 class="text-center">Your Data</h1>
       <table class="table table-striped" id="table">
         <thead>

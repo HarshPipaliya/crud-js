@@ -1,4 +1,3 @@
-console.log("This is a crud operations");
 let tbody = document.getElementById("tbody");
 
 
@@ -101,12 +100,24 @@ function handleChangeState() {
     }
 }
 
-
+handleLoadUsers();
 
 
 
 
 // Call when user click on submit or update button
+
+let users;
+let datas = JSON.parse(localStorage.getItem("users"));
+if(data.length > 0) {
+    users = JSON.parse(localStorage.getItem("users"));
+}
+else{
+    users = [];
+}
+
+
+
 function handleSubmit() {
     event.preventDefault();
     let person = {};
@@ -170,6 +181,7 @@ let idArr = [];    // Array for pushing only unique value of id.
 
 // Function to show data in table with user input data.
 const handlePushData = (person) => {
+    // debugger;
     let id = 1;
     getId();
     function getId() {
@@ -179,29 +191,49 @@ const handlePushData = (person) => {
         }
         if (!(idArr.includes(id))) {
             idArr.push(id);
+            person.id = id;
         }
     }
-    let html = `<tr>
-                    <th scope="row"><input type="checkbox" class="checkbox"></th>
-                    <th scope="row">${id}</th>
-                    <td>${person.fname}</td>
-                    <td>${person.lname}</td>
-                    <td>${person.email}</td>
-                    <td>${person.mobile}</td>
-                    <td>${person.gender}</td>
-                    <td>${person.hobby}</td>
-                    <td>${person.country}</td>
-                    <td>${person.state}</td>
-                    <td>${person.city}</td>
-                    <td>
-                    <button class="btn btn-primary" id="btnUpdate" onclick="handleUpdate(this)">Update</button
-                    ><button id="btnDelete" class="btn btn-danger my-1 mx-1" onclick="handleDelete(this)">
-                        Delete
-                    </button>
-                    </td>
-                </tr>`;
-    tbody.innerHTML += html;
+    users.push(person);
+    localStorage.setItem("users",JSON.stringify(users));
+    // handleLoadUsers();
 }
+
+
+
+// Fill the table   
+function handleLoadUsers(){
+    
+    let localUsers = localStorage.getItem("users");
+localUsers = JSON.parse(localUsers);
+
+    if(localUsers!=null){
+        localUsers.map((user)=>{
+            let html = `<tr>
+                        <th scope="row"><input type="checkbox" class="checkbox"></th>
+                        <th scope="row">${user.id}</th>
+                        <td>${user.fname}</td>
+                        <td>${user.lname}</td>
+                        <td>${user.email}</td>
+                        <td>${user.mobile}</td>
+                        <td>${user.gender}</td>
+                        <td>${user.hobby}</td>
+                        <td>${user.country}</td>
+                        <td>${user.state}</td>
+                        <td>${user.city}</td>
+                        <td>
+                        <button class="btn btn-primary" id="btnUpdate" onclick="handleUpdate(this)">Update</button
+                        ><button id="btnDelete" class="btn btn-danger my-1 mx-1" onclick="handleDelete(this)">
+                            Delete
+                        </button>
+                        </td>
+                    </tr>`;
+        tbody.innerHTML += html;
+        });
+    }
+}
+
+
 
 
 
@@ -326,7 +358,11 @@ const handleDelete = (btnDelete) => {
     selectedRow = btnDelete.parentNode.parentNode;
     let getId = selectedRow.cells[1].innerHTML;
     let table = document.getElementById("table");
-    table.deleteRow(selectedRow.rowIndex);
+    // table.deleteRow(selectedRow.rowIndex);
+    // let users = localStorage.getItem("users")
+    // let parsedUsers = JSON.parse(users);
+    // parsedUsers.splice(selectedRow.rowIndex-1, 1);
+    // localStorage.setItem("users",JSON.stringify(parsedUsers)); 
     let index = idArr.indexOf(Number(getId));
     if (index > -1) {
         idArr.splice(index, 1);
